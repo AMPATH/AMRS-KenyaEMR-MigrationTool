@@ -401,11 +401,10 @@ System.out.println("Latest program "+ amrsProgramss.get(0).getPatientId());
         }
     }
   public static void triage (String server, String username, String password, String locations, String parentUUID, AMRSTriageService amrsTriageService, AMRSPatientServices amrsPatientServices, AMRSConceptMappingService amrsConceptMappingService, String url, String auth) throws SQLException, JSONException, ParseException, IOException {
-    String sql = "";
-    List<AMRSTriage> amrsTriageList = amrsTriageService.findFirstByOrderByIdDesc();
-    String encounterID=amrsTriageList.get(0).getEncounterID();
-
-    if(amrsTriageList.size()>0) {
+    String sql ="";
+    List<AMRSTriage> amrsTriages = amrsTriageService.findFirstByOrderByIdDesc();
+    String prevEncounterID=amrsTriages.get(0).getEncounterID();
+    if(amrsTriages.size()>0) {
       sql = "select\n" +
         "\tl.uuid as location_uuid,\n" +
         "\to.creator as provider,\n" +
@@ -482,7 +481,7 @@ System.out.println("Latest program "+ amrsProgramss.get(0).getPatientId());
         "\tcd.concept_datatype_id = c.datatype_id\n" +
         "where\n" +
         "\te.encounter_type in (110)\n" +
-        "AND e.encounter_id > "+ encounterID +"" +
+        "\tAND e.encounter_id > "+ prevEncounterID +"\n" +
         "\tand o.concept_id in (5088, 5085, 5086, 5087, 5092, 5090, 5089, 980, 1342)\n" +
         "\tand e.location_id in (2, 98, 339)\n" +
         "\tand e.voided = 0\n" +
@@ -516,7 +515,6 @@ System.out.println("Latest program "+ amrsProgramss.get(0).getPatientId());
       String datatypeId = rs.getString("datatype_id");
       String encounterName = rs.getString("encounterName");
       String category = rs.getString("Category");
-
 
       List<AMRSTriage> amrsTriageList = amrsTriageService.findByPatientIdAndEncounterIdAndConceptId(patientId,encounterID,conceptId);
       if(amrsTriageList.isEmpty()){
