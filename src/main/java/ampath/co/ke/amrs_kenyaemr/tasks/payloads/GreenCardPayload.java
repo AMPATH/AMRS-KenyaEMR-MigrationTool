@@ -54,13 +54,13 @@ public class GreenCardPayload {
                     jsonObservation.put("obsDatetime", amrsGreenCardEncounters.get(x).getObsDateTime());///String.valueOf(conceptsetId));
                     jsonObservation.put("value", amrsGreenCardEncounters.get(x).getKenyaEmrValue());
                     jsonObservation.put("location", KenyaEMRlocationUuid);
-                    Set<String> excludedIds = Set.of("10102", "10103","10104","10105","10106","10107","10108","10109");
+                    Set<String> excludedIds = Set.of("10102", "10103","10104","10105","10106","10107","10108","10109","1645");
                     if (!Objects.equals(value, "")) {
                         if (!excludedIds.contains(amrsGreenCardEncounters.get(x).getConceptId())) {
                             jsonObservations.put(jsonObservation);
                         }
                     }
-                    patientuuid = amrsTranslater.KenyaemrPatientUuid(amrsGreenCardEncounters.get(x).getKenyaemrPatientUuid());
+                    patientuuid = amrsTranslater.KenyaemrPatientUuid(amrsGreenCardEncounters.get(x).getPatientId());
                     formuuid = amrsGreenCardEncounters.get(x).getKenyaemrFormUuid();
                     encounteruuid = amrsGreenCardEncounters.get(x).getKenyaemrEncounterTypeUuid();
                     encounterDatetime = amrsGreenCardEncounters.get(x).getKenyaEmrEncounterDateTime();
@@ -132,7 +132,7 @@ public class GreenCardPayload {
                             at.setResponseCode(String.valueOf(rescode));
                             at.setResponseCode("201");
                             // at.setKenyaemrEncounterUuid(amrsTriageEncounters.get(0).getKenyaemrEncounterUuid());
-                            System.out.println("Imefika Hapa na data " + rescode);
+                          //  System.out.println("Imefika Hapa na data " + rescode);
                             amrsGreenCardService.save(at);
                         }
                     }else{
